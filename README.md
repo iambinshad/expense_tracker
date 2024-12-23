@@ -14,10 +14,7 @@ An **Expense Tracker** application built using **Flutter**, following the **Clea
 
 ### Additional Features
 - **Daily Reminder Notifications:** Get notified to log your daily expenses.
-- **Currency Settings:** Support for different currencies.
-- **Multi-Language Support:** Currently supports English, Khmer, and Japanese.
-- **Dark Mode:** Switch between light and dark themes.
-- **Biometric Authentication:** Ensure secure access to the app.
+
 
 ---
 
@@ -25,11 +22,11 @@ An **Expense Tracker** application built using **Flutter**, following the **Clea
 
 ### **Frontend:**
 - Flutter (Dart)
-- Hive (Local Storage)
+
 
 ### **Backend:**
 - Firebase (Authentication)
-- Notification Service (Custom)
+- Hive (Local Storage)
 
 ### **State Management:**
 - Provider
@@ -37,8 +34,8 @@ An **Expense Tracker** application built using **Flutter**, following the **Clea
 ### **Architecture:**
 - Clean Architecture
 
-### **Localization:**
-- `flutter_localization` package
+### **Notification Service:**
+- `Flutter_local_notification` package
 
 ### **Other Tools:**
 - Timezone support using `timezone` package
@@ -70,7 +67,7 @@ lib/
 ### Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/expense-tracker.git
+   git clone https://github.com/iambinshad/expense_tracker.git
    ```
 2. Navigate to the project directory:
    ```bash
@@ -91,10 +88,7 @@ lib/
 
 1. **Login/Register:** Use Firebase Authentication for secure access.
 2. **Track Expenses:** Add your daily expenses with details like amount, category, and date.
-3. **Reminders:** Set daily reminders to log your expenses.
-4. **Currency Settings:** Configure your preferred currency from settings.
-5. **Localization:** Switch between supported languages from the settings menu.
-6. **Dark Mode:** Toggle between light and dark themes for a better user experience.
+3. **Reminders:** Set daily reminders to log your expenses. ok
 
 ---
 
