@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:expense_tracker/core/errors/error_state_widget.dart';
 import 'package:expense_tracker/presentation/pages/home/widgets/app_drawer.dart';
 import 'package:expense_tracker/presentation/providers/bottom_nav_provider.dart';
@@ -14,18 +15,13 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final theme = Theme.of(context);
-    bool _isDailyReminderEnabled = false;
-    bool _isDarkModeEnabled = false;
-    bool _isNotificationsEnabled = false;
-    bool _isBiometricEnabled = false;
-
+  
     return Scaffold(
         onDrawerChanged: (isOpened) {
           Provider.of<BottomNavProvider>(context, listen: false)
               .changeBottomNavState();
         },
-        drawer: AppDrawer(),
+        drawer: const AppDrawer(),
         appBar: AppBar(
           centerTitle: true,
           automaticallyImplyLeading: true,
@@ -37,7 +33,6 @@ class HomePage extends StatelessWidget {
                   color: Colors.white70,
                 ),
               ),
-              // const SizedBox(height: 8),
               Consumer<ExpenseProvider>(
                 builder: (context, provider, child) => Text(
                   '${provider.isCurrencyDollar ? "\$" : "\u{20AC}"}${provider.totalExpenses.toStringAsFixed(2)}',
@@ -68,7 +63,9 @@ class HomePage extends StatelessWidget {
                     ),
                     SizedBox(
                         height: 100,
-                        child: Image.asset("assets/Icons/unnamed.png")),
+                        child: Hero(
+                            tag: "logo",
+                          child: Image.asset("assets/Icons/unnamed.png"))),
                     SummaryCard(
                       isDoller: provider.isCurrencyDollar,
                       title: 'This Week',
@@ -119,9 +116,7 @@ class HomePage extends StatelessWidget {
                           child: const Icon(Icons.filter_list_rounded)),
                       onPressed: () => _showFilterDialog(context),
                     ),
-                    // if (filterProvider.hasActiveFilters) ...{
-                    //   ActiveFiltersChip(filterProvider: filterProvider),
-                    // },
+                    
                   ],
                 ),
               ),
@@ -135,9 +130,13 @@ class HomePage extends StatelessWidget {
                   itemCount: filteredExpenses.length,
                   itemBuilder: (context, index) {
                     final expense = filteredExpenses[index];
-                    return ModernExpenseCard(
-                      expense: expense,
-                      isDoller: expenseProvider.isCurrencyDollar,
+                    return FadeInDown(
+                      delay: const Duration(milliseconds: 100),
+                      from: 5,
+                      child: ModernExpenseCard(
+                        expense: expense,
+                        isDoller: expenseProvider.isCurrencyDollar,
+                      ),
                     );
                   },
                 ))
@@ -149,7 +148,7 @@ class HomePage extends StatelessWidget {
 
   void _showFilterDialog(BuildContext context) {
     showModalBottomSheet(
-      isScrollControlled: true, // Allows dynamic resizing
+      isScrollControlled: true, 
       enableDrag: true,
       context: context,
       builder: (context) {

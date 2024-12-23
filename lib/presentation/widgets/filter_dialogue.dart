@@ -11,7 +11,6 @@ class FilterSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // Remove fixed height to allow dynamic resizing
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: const BorderRadius.vertical(
@@ -19,9 +18,8 @@ class FilterSheet extends StatelessWidget {
         ),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Adjust height based on content
+        mainAxisSize: MainAxisSize.min, 
         children: [
-          // Handle bar
           Container(
             margin: const EdgeInsets.symmetric(vertical: 12),
             height: 4,
@@ -33,7 +31,7 @@ class FilterSheet extends StatelessWidget {
           ),
           Flexible(
             child: ListView(
-              shrinkWrap: true, // Let ListView shrink to fit content
+              shrinkWrap: true, 
               padding: const EdgeInsets.all(16),
               children: const [
                 _FilterHeader(),
@@ -88,15 +86,7 @@ class _CategoryFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final categories = [
-    //   'Food',
-    //   'Transport',
-    //   'Shopping',
-    //   'Entertainment',
-    //   'Bills',
-    //   'Others'
-    // ];
-
+  
     return Consumer<FilterSortProvider>(
       builder: (context, provider, child) {
         return Column(
@@ -114,7 +104,6 @@ class _CategoryFilter extends StatelessWidget {
                 final isSelected = provider.selectedCategory?.categoryName == category.categoryName;
                 return FilterChip(
                   avatar: SizedBox(
-                        // decoration: BoxDecoration(border: Border.all(color: Colors.blue,width: 2),shape:BoxShape.circle),
                         height: 50,
                         width: 50,
                         child: Image.asset(

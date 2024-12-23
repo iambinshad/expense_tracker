@@ -3,7 +3,6 @@ import 'package:expense_tracker/presentation/pages/add_expense/add_expense_scree
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin _notifications =
@@ -39,7 +38,7 @@ class NotificationService {
       settings,
       onDidReceiveNotificationResponse: (details) {
 navigatorKey.currentState?.push(
-        MaterialPageRoute(builder: (context) => AddExpenseSheet()),
+        MaterialPageRoute(builder: (context) => const AddExpenseSheet()),
       );      },
     );
   }

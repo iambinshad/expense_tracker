@@ -28,7 +28,7 @@ void main() {
       id: '1',
       description: 'Lunch',
       amount: 15.0,
-      category: CategoryModel(categoryName: 'Food', categoryIcon: '🍔'),
+      category: CategoryModel(categoryName: 'Food', categoryIcon: 'assets/icons/food.svg'),
       date: DateTime.now(),
     );
 

@@ -1,20 +1,12 @@
 import 'package:expense_tracker/presentation/pages/reminder_screen.dart';
+import 'package:expense_tracker/presentation/pages/splashscreen/splash_screen.dart';
 import 'package:expense_tracker/presentation/providers/expense_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AppDrawer extends StatefulWidget {
+class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
-
-  @override
-  State<AppDrawer> createState() => _AppDrawerState();
-}
-
-class _AppDrawerState extends State<AppDrawer> {
-  bool _isDailyReminderEnabled = false;
-  bool _isDarkModeEnabled = false;
-  bool _isNotificationsEnabled = false;
-  bool _isBiometricEnabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +15,6 @@ class _AppDrawerState extends State<AppDrawer> {
     return Drawer(
       child: Column(
         children: [
-          // Profile Section
           UserAccountsDrawerHeader(
             decoration: BoxDecoration(
               color: theme.colorScheme.primary,
@@ -37,16 +28,16 @@ class _AppDrawerState extends State<AppDrawer> {
                 backgroundColor: theme.colorScheme.surface,
                 child:
                     const Image(image: AssetImage("assets/Icons/unnamed.png"))),
-            accountName: const Text(
-              "John Doe",
-              style: TextStyle(
+            accountName:  Text(
+              FirebaseAuth.instance.currentUser!.displayName!, 
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
             ),
-            accountEmail: const Text(
-              "johndoe@example.com",
-              style: TextStyle(fontSize: 14),
+            accountEmail:  Text(
+              FirebaseAuth.instance.currentUser!.email!,
+              style: const TextStyle(fontSize: 14),
             ),
           ),
 
@@ -73,7 +64,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DailyReminderScreen(),
+                          builder: (context) => const DailyReminderScreen(),
                         ));
                   },
                 ),
@@ -185,7 +176,7 @@ class _AppDrawerState extends State<AppDrawer> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: const Text('About the App'),
-                          content: Text('App Version: 1.0.0'),
+                          content: const Text('App Version: 1.0.0'),
                           actions: [
                             TextButton(
                               child: const Text('Close'),
@@ -245,7 +236,10 @@ class _AppDrawerState extends State<AppDrawer> {
                               color: theme.colorScheme.error,
                             ),
                           ),
-                          onPressed: () async {},
+                          onPressed: () async {
+                            await FirebaseAuth.instance.signOut();
+                           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const SplashScreen(),), (Route<dynamic> route) => false, );
+                          },
                         ),
                       ],
                     );

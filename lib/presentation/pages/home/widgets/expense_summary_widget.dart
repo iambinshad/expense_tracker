@@ -148,22 +148,7 @@ class ModernExpenseCard extends StatelessWidget {
     );
   }
 
-  IconData _getCategoryIcon(String category) {
-    switch (category.toLowerCase()) {
-      case 'food':
-        return Icons.restaurant_rounded;
-      case 'transport':
-        return Icons.directions_car_rounded;
-      case 'shopping':
-        return Icons.shopping_bag_rounded;
-      case 'entertainment':
-        return Icons.movie_rounded;
-      case 'bills':
-        return Icons.receipt_rounded;
-      default:
-        return Icons.attach_money_rounded;
-    }
-  }
+  
 
   void _editExpense(BuildContext context) {
     Navigator.push(
@@ -175,7 +160,6 @@ class ModernExpenseCard extends StatelessWidget {
   }
 
   void _deleteExpense(BuildContext context) {
-    // Show confirmation dialog and delete if confirmed
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

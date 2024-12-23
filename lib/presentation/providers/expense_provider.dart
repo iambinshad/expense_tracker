@@ -1,12 +1,32 @@
 // lib/presentation/providers/expense_provider.dart
 import 'dart:developer';
 
+import 'package:expense_tracker/core/constants/expense_categories.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../domain/entities/expense.dart';
 import '../../domain/repositories/expense_repository.dart';
 
 class ExpenseProvider with ChangeNotifier {
+
+CategoryModel selectedCategoryE = CategoryModel(
+    categoryName: ExpenseCategories.categories[7].categoryName,
+    categoryIcon: ExpenseCategories.categories[7].categoryIcon,
+  );
+  late DateTime selectedDateE;
+
+setDateE(value){
+    selectedDateE = value;
+    notifyListeners();
+  }
+   setCategoryE(value){
+    selectedCategoryE = value;
+    notifyListeners();
+  }
+
+
+
+  //////////////
 
 bool isCurrencyDollar = true;
 
@@ -16,6 +36,20 @@ changeCurrency(){isCurrencyDollar=!isCurrencyDollar;notifyListeners();}
   ExpenseProvider(this._repository) {
     loadExpenses();
   }
+  setDate(value){
+    selectedDateTwo = value;
+    notifyListeners();
+  }
+   setCategory(value){
+    selectedCategory = value;
+    notifyListeners();
+  }
+  
+     DateTime selectedDateTwo = DateTime.now();
+  CategoryModel selectedCategory = CategoryModel(
+    categoryName: ExpenseCategories.categories[7].categoryName,
+    categoryIcon: ExpenseCategories.categories[7].categoryIcon,
+  );
 
   List<Expense> _expenses = [];
   bool _isLoading = false;
@@ -146,7 +180,6 @@ Map<String, double> get expensesByCategory {
 
   // Add these helper methods for the insights widget
  List<CategoryData> getCategoryDistribution() {
-  final Map<String, double> categoryTotals = {};
   final total = totalExpenses; // Ensure totalExpenses sums up all expenses correctly
 
   final categoryAmounts = expensesByCategory; // Map of category totals

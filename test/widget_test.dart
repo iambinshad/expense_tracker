@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 class MockBox extends Mock implements Box<Expense> {}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('test', (WidgetTester tester) async {
     final mockExpenseBox = MockBox();
 
     await tester.pumpWidget(MyApp(expenseBox: mockExpenseBox));

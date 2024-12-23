@@ -1,84 +1,24 @@
-import 'package:expense_tracker/core/services/notification_service.dart';
+import 'package:expense_tracker/presentation/providers/reminder_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
-class DailyReminderScreen extends StatefulWidget {
-  const DailyReminderScreen({super.key});
+class DailyReminderScreen extends StatelessWidget {
+  const DailyReminderScreen({Key? key}) : super(key: key);
 
-  @override
-  _DailyReminderScreenState createState() => _DailyReminderScreenState();
-}
-
-class _DailyReminderScreenState extends State<DailyReminderScreen> {
-  bool _isDailyReminderEnabled = false;
-  TimeOfDay _selectedTime = const TimeOfDay(hour: 8, minute: 0);
-
-  @override
-  void initState() {
-    super.initState();
-    _loadPreferences();
-  }
-
-  Future<void> _loadPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isDailyReminderEnabled = prefs.getBool('dailyReminderEnabled') ?? false;
-      final hour = prefs.getInt('dailyReminderHour') ?? 8;
-      final minute = prefs.getInt('dailyReminderMinute') ?? 0;
-      _selectedTime = TimeOfDay(hour: hour, minute: minute);
-    });
-  }
-
-  Future<void> _savePreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('dailyReminderEnabled', _isDailyReminderEnabled);
-    await prefs.setInt('dailyReminderHour', _selectedTime.hour);
-    await prefs.setInt('dailyReminderMinute', _selectedTime.minute);
-  }
-
-  void _toggleDailyReminder(bool value) async {
-    setState(() {
-      _isDailyReminderEnabled = value;
-    });
-    if (_isDailyReminderEnabled) {
-      // Schedule Notification
-      await NotificationService().scheduleDailyReminder(
-        id: 1,
-        title: 'Daily Reminder',
-        body: 'Don\'t forget to record your expenses for today!.',
-        time: _selectedTime,
-      );
-    } else {
-      // Cancel Notification
-      await NotificationService().cancelNotification(1);
-    }
-    _savePreferences();
-  }
-
-  Future<void> _pickTime() async {
+  Future<void> _pickTime(BuildContext context, DailyReminderProvider provider) async {
     final pickedTime = await showTimePicker(
       context: context,
-      initialTime: _selectedTime,
+      initialTime: provider.selectedTime,
     );
     if (pickedTime != null) {
-      setState(() {
-        _selectedTime = pickedTime;
-      });
-      if (_isDailyReminderEnabled) {
-        // Reschedule Notification
-        await NotificationService().scheduleDailyReminder(
-          id: 1,
-          title: 'Daily Reminder',
-          body: 'Don\'t forget to record your expenses for today!.',
-          time: _selectedTime,
-        );
-      }
-      _savePreferences();
+      await provider.updateReminderTime(pickedTime);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<DailyReminderProvider>(context);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Daily Reminder Settings')),
       body: Padding(
@@ -89,14 +29,14 @@ class _DailyReminderScreenState extends State<DailyReminderScreen> {
               secondary: const Icon(Icons.access_time_outlined),
               title: const Text('Daily Reminder'),
               subtitle: const Text('Get reminded to log expenses'),
-              value: _isDailyReminderEnabled,
-              onChanged: _toggleDailyReminder,
+              value: provider.isDailyReminderEnabled,
+              onChanged: (value) => provider.toggleDailyReminder(value),
             ),
             ListTile(
               leading: const Icon(Icons.alarm),
               title: const Text('Reminder Time'),
-              subtitle: Text('${_selectedTime.format(context)}'),
-              onTap: _pickTime,
+              subtitle: Text(provider.selectedTime.format(context)),
+              onTap: () => _pickTime(context, provider),
             ),
           ],
         ),
