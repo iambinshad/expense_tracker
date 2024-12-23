@@ -45,7 +45,7 @@ class _DailyReminderScreenState extends State<DailyReminderScreen> {
       await NotificationService().scheduleDailyReminder(
         id: 1,
         title: 'Daily Reminder',
-        body: 'Don\'t forget to log your expenses!',
+        body: 'Don\'t forget to record your expenses for today!.',
         time: _selectedTime,
       );
     } else {
@@ -69,7 +69,7 @@ class _DailyReminderScreenState extends State<DailyReminderScreen> {
         await NotificationService().scheduleDailyReminder(
           id: 1,
           title: 'Daily Reminder',
-          body: 'Don\'t forget to log your expenses!',
+          body: 'Don\'t forget to record your expenses for today!.',
           time: _selectedTime,
         );
       }

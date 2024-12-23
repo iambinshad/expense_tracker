@@ -1,5 +1,7 @@
 import 'package:expense_tracker/presentation/pages/reminder_screen.dart';
+import 'package:expense_tracker/presentation/providers/expense_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -64,28 +66,18 @@ class _AppDrawerState extends State<AppDrawer> {
                     ),
                   ),
                 ),
- ListTile(
+                ListTile(
                   leading: const Icon(Icons.more_time_sharp),
                   title: const Text('Daily Reminder'),
                   onTap: () {
-             Navigator.push(context, MaterialPageRoute(builder: (context) => DailyReminderScreen(),));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DailyReminderScreen(),
+                        ));
                   },
                 ),
                 // Daily Reminder
-                
-
-                // Dark Mode
-                SwitchListTile(
-                  secondary: const Icon(Icons.dark_mode_outlined),
-                  title: const Text('Dark Mode'),
-                  subtitle: const Text('Toggle dark theme'),
-                  value: _isDarkModeEnabled,
-                  onChanged: (bool value) {
-                    // setState(() {
-                    //   _isDarkModeEnabled = value;
-                    // });
-                  },
-                ),
 
                 const Divider(),
 
@@ -106,7 +98,39 @@ class _AppDrawerState extends State<AppDrawer> {
                   leading: const Icon(Icons.restart_alt_rounded),
                   title: const Text('Reset Datas'),
                   onTap: () {
-                    // Navigate to account settings
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Confirm Reset'),
+                          content: const Text(
+                              'Are you sure you want to reset all data? This action cannot be undone.'),
+                          actions: [
+                            TextButton(
+                              child: const Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close the dialog
+                              },
+                            ),
+                            TextButton(
+                              child: Text(
+                                'Reset',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
+                              ),
+                              onPressed: () async {
+                                await context
+                                    .read<ExpenseProvider>()
+                                    .clearDatabase();
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                 ),
 
@@ -114,23 +138,65 @@ class _AppDrawerState extends State<AppDrawer> {
                   leading: const Icon(Icons.currency_exchange),
                   title: const Text('Currency Settings'),
                   onTap: () {
-                    // Navigate to currency settings
-                  },
-                ),
-
-                ListTile(
-                  leading: const Icon(Icons.help_outline),
-                  title: const Text('Help & Support'),
-                  onTap: () {
-                    // Navigate to help section
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Choose Currency'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                title: const Text('USD'),
+                                onTap: () {
+                                  context
+                                      .read<ExpenseProvider>()
+                                      .changeCurrency();
+                                  Navigator.of(context).pop(); // Close dialog
+                                },
+                              ),
+                              ListTile(
+                                title: const Text('EUR'),
+                                onTap: () {
+                                  context
+                                      .read<ExpenseProvider>()
+                                      .changeCurrency();
+                                  Navigator.of(context).pop(); // Close dialog
+                                },
+                              ),
+                              // Add more currency options here as needed
+                            ],
+                          ),
+                        );
+                      },
+                    );
                   },
                 ),
 
                 ListTile(
                   leading: const Icon(Icons.info_outline),
                   title: const Text('About'),
-                  onTap: () {
-                    // Navigate to about section
+                  onTap: () async {
+                    // Fetch app version
+
+                    // Show version in a dialog
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('About the App'),
+                          content: Text('App Version: 1.0.0'),
+                          actions: [
+                            TextButton(
+                              child: const Text('Close'),
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close the dialog
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                 ),
               ],
@@ -179,9 +245,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               color: theme.colorScheme.error,
                             ),
                           ),
-                          onPressed: () async {
-                           
-                          },
+                          onPressed: () async {},
                         ),
                       ],
                     );

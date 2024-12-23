@@ -1,3 +1,5 @@
+import 'package:expense_tracker/main.dart';
+import 'package:expense_tracker/presentation/pages/add_expense/add_expense_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -36,8 +38,9 @@ class NotificationService {
     await _notifications.initialize(
       settings,
       onDidReceiveNotificationResponse: (details) {
-        debugPrint("Notification Clicked: ${details.payload}");
-      },
+navigatorKey.currentState?.push(
+        MaterialPageRoute(builder: (context) => AddExpenseSheet()),
+      );      },
     );
   }
 

@@ -7,17 +7,22 @@ import '../../domain/entities/expense.dart';
 import '../../domain/repositories/expense_repository.dart';
 
 class ExpenseProvider with ChangeNotifier {
+
+bool isCurrencyDollar = true;
+
+changeCurrency(){isCurrencyDollar=!isCurrencyDollar;notifyListeners();}
+
   final ExpenseRepository _repository;
-  
+  ExpenseProvider(this._repository) {
+    loadExpenses();
+  }
+
   List<Expense> _expenses = [];
   bool _isLoading = false;
   String? _error;
   DateTime _selectedDate = DateTime.now();
 
-  ExpenseProvider(this._repository) {
-    _loadExpenses();
-  }
-
+  
   // Getters
   List<Expense> get expenses => _expenses;
   bool get isLoading => _isLoading;
@@ -25,7 +30,7 @@ class ExpenseProvider with ChangeNotifier {
   DateTime get selectedDate => _selectedDate;
 
   // Load all expenses
-  Future<void> _loadExpenses() async {
+  Future<void> loadExpenses() async {
     _isLoading = true;
     _error = null;
     notifyListeners();
@@ -46,7 +51,7 @@ class ExpenseProvider with ChangeNotifier {
   Future<void> addExpense(Expense expense) async {
     try {
       await _repository.addExpense(expense);
-      await _loadExpenses();
+      await loadExpenses();
     } catch (e) {
             log(e.toString());
 
@@ -59,7 +64,7 @@ class ExpenseProvider with ChangeNotifier {
   Future<void> updateExpense(Expense expense) async {
     try {
       await _repository.updateExpense(expense);
-      await _loadExpenses();
+      await loadExpenses();
     } catch (e) {
             log(e.toString());
 
@@ -72,7 +77,7 @@ class ExpenseProvider with ChangeNotifier {
   Future<void> deleteExpense(String id) async {
     try {
       await _repository.deleteExpense(id);
-      await _loadExpenses();
+      await loadExpenses();
     } catch (e) {
             log(e.toString());
 
@@ -80,6 +85,18 @@ class ExpenseProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+   Future<void> clearDatabase() async {
+    try {
+      await _repository.resetDataBase();
+      await loadExpenses();
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    }
+  }
+
+  
 
   // Set selected date
   void setSelectedDate(DateTime date) {

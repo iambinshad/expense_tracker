@@ -196,7 +196,7 @@ class _MonthlyTrendChart extends StatelessWidget {
                               reservedSize: 40,
                               getTitlesWidget: (value, meta) {
                                 return Text(
-                                  '\$${value.toInt()}',
+                                  '${provider.isCurrencyDollar?"\$":"\u{20AC}"}${value.toInt()}',
                                   style: Theme.of(context).textTheme.bodySmall,
                                 );
                               },
@@ -296,7 +296,7 @@ class _TopExpenses extends StatelessWidget {
                     title: Text(expense.description),
                     subtitle: Text(DateFormat.yMMMd().format(expense.date)),
                     trailing: Text(
-                      '\$${expense.amount.toStringAsFixed(2)}',
+                      '${provider.isCurrencyDollar?"\$":"\u{20AC}"}${expense.amount.toStringAsFixed(2)}',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),

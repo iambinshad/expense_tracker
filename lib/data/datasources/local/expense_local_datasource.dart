@@ -45,6 +45,7 @@ class ExpenseLocalDatasource {
 
   Future<List<Expense>> getAllExpenses() async {
     try {
+      log(expenseBox.values.toList().toString());
       return expenseBox.values.toList();
     } catch (e) {
       throw CacheException('Failed to get expenses');
@@ -60,6 +61,14 @@ class ExpenseLocalDatasource {
           .toList();
     } catch (e) {
       throw CacheException('Failed to get expenses by date range');
+    }
+  }
+
+  Future<void>resetData() async {
+    try {
+      await expenseBox.clear();
+    } catch (e) {
+      throw CacheException('Failed to reset database');
     }
   }
 }

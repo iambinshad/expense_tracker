@@ -11,11 +11,13 @@ class SummaryCard extends StatelessWidget {
   final String title;
   final double amount;
   final IconData icon;
+  final bool isDoller;
 
   const SummaryCard({super.key, 
     required this.title,
     required this.amount,
     required this.icon,
+    required this.isDoller
   });
 
   @override
@@ -36,7 +38,7 @@ class SummaryCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '\$${amount.toStringAsFixed(2)}',
+            '${!isDoller?"\u{20AC}":"\$"}${amount.toStringAsFixed(2)}',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
@@ -51,8 +53,9 @@ class SummaryCard extends StatelessWidget {
 
 class ModernExpenseCard extends StatelessWidget {
   final Expense expense;
+ final bool isDoller;
 
-  const ModernExpenseCard({super.key, required this.expense});
+  const ModernExpenseCard({super.key, required this.expense,required this.isDoller});
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +91,7 @@ class ModernExpenseCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '\$${expense.amount.toStringAsFixed(2)}',
+                    '${isDoller?"\$":"\u{20AC}"}${expense.amount.toStringAsFixed(2)}',
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: expense.amount > 1000

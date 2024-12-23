@@ -62,4 +62,13 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
       throw Failure('Failed to get expenses by date range');
     }
   }
+  
+  @override
+  Future<void> resetDataBase() async{
+    try {
+      await localDatasource.resetData();
+    } catch (e) {
+      throw Failure('Failed to reset database');
+    }
+  }
 }

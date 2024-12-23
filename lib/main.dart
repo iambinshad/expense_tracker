@@ -1,5 +1,6 @@
 // lib/main.dart
 import 'package:expense_tracker/core/services/notification_service.dart';
+import 'package:expense_tracker/presentation/pages/add_expense/add_expense_screen.dart';
 import 'package:expense_tracker/presentation/pages/bottom_nav/bottom_nav.dart';
 import 'package:expense_tracker/presentation/providers/bottom_nav_provider.dart';
 import 'package:expense_tracker/presentation/providers/filter_sort_provider.dart';
@@ -21,15 +22,17 @@ void main() async {
   final appDocumentDir = await getApplicationDocumentsDirectory();
   await Hive.initFlutter(appDocumentDir.path);
   Hive.registerAdapter(ExpenseAdapter());
-  Hive.registerAdapter(CategoryModelAdapter()); // For CategoryModel
-  tz.initializeTimeZones();
+  Hive.registerAdapter(CategoryModelAdapter()); 
+// Open the expense box
+  final expenseBox = await Hive.openBox<Expense>('expenses');
   
+  tz.initializeTimeZones();
   final notificationService = NotificationService();
   await notificationService.init();
-  // Open the expense box
-  final expenseBox = await Hive.openBox<Expense>('expenses');
+  
   runApp(MyApp(expenseBox: expenseBox));
 }
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   final Box<Expense> expenseBox;
@@ -52,6 +55,16 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+          onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/add-expense':
+            return MaterialPageRoute(
+              builder: (context) => const AddExpenseSheet(),
+            );
+        }
+        return null;
+      },
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Expense Tracker',
         theme: AppThemes.light,

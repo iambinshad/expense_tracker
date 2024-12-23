@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
               // const SizedBox(height: 8),
               Consumer<ExpenseProvider>(
                 builder: (context, provider, child) => Text(
-                  '\$${provider.totalExpenses.toStringAsFixed(2)}',
+                  '${provider.isCurrencyDollar ? "\$" : "\u{20AC}"}${provider.totalExpenses.toStringAsFixed(2)}',
                   style: textTheme.headlineLarge?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -58,6 +58,7 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SummaryCard(
+                      isDoller: provider.isCurrencyDollar,
                       title: 'This Month',
                       amount: provider.currentMonthExpenses.fold<double>(
                         0,
@@ -69,6 +70,7 @@ class HomePage extends StatelessWidget {
                         height: 100,
                         child: Image.asset("assets/Icons/unnamed.png")),
                     SummaryCard(
+                      isDoller: provider.isCurrencyDollar,
                       title: 'This Week',
                       amount: provider.currentWeekExpenses.fold<double>(
                         0,
@@ -133,7 +135,10 @@ class HomePage extends StatelessWidget {
                   itemCount: filteredExpenses.length,
                   itemBuilder: (context, index) {
                     final expense = filteredExpenses[index];
-                    return ModernExpenseCard(expense: expense);
+                    return ModernExpenseCard(
+                      expense: expense,
+                      isDoller: expenseProvider.isCurrencyDollar,
+                    );
                   },
                 ))
               }

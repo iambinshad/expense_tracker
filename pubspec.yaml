@@ -43,6 +43,7 @@ dependencies:
   shared_preferences: ^2.3.4
   workmanager: ^0.5.2
   android_alarm_manager_plus: ^4.0.5
+  mockito: ^5.0.0
 
 dev_dependencies:
   flutter_test:
