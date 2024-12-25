@@ -17,35 +17,15 @@ class AddExpenseSheet extends StatefulWidget {
 
 class _AddExpenseSheetState extends State<AddExpenseSheet> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _amountController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _descriptionController = TextEditingController(
-        text: widget.expense?.description ?? '',
-      );
-      _amountController = TextEditingController(
-        text: widget.expense?.amount.toString() ?? '',
-      );
-      final provider = Provider.of<ExpenseProvider>(context, listen: false);
-      Provider.of<ExpenseProvider>(context, listen: false).selectedCategory =
-          widget.expense?.category ??
-              CategoryModel(
-                categoryName: ExpenseCategories.categories[7].categoryName,
-                categoryIcon: ExpenseCategories.categories[7].categoryIcon,
-              );
-      provider.selectedDateTwo = widget.expense?.date ?? DateTime.now();
-    });
-  }
-
+  
   @override
   void dispose() {
     _descriptionController.dispose();
     _amountController.dispose();
-    super.dispose();
+    super.dispose(); // Do not reset provider values here
   }
 
   @override

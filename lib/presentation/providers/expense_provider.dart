@@ -24,6 +24,16 @@ setDateE(value){
     notifyListeners();
   }
 
+  resetValue(){
+    selectedCategoryE = 
+        CategoryModel(
+          categoryName: ExpenseCategories.categories[7].categoryName,
+          categoryIcon: ExpenseCategories.categories[7].categoryIcon,
+        );
+    selectedDateE =  DateTime.now();
+    notifyListeners();
+  }
+
 
 
   //////////////
@@ -44,7 +54,13 @@ changeCurrency(){isCurrencyDollar=!isCurrencyDollar;notifyListeners();}
     selectedCategory = value;
     notifyListeners();
   }
-  
+  resetAddScreenValue(){
+       DateTime selectedDateTwo = DateTime.now();
+  CategoryModel selectedCategory = CategoryModel(
+    categoryName: ExpenseCategories.categories[7].categoryName,
+    categoryIcon: ExpenseCategories.categories[7].categoryIcon,);
+    notifyListeners();
+  }
      DateTime selectedDateTwo = DateTime.now();
   CategoryModel selectedCategory = CategoryModel(
     categoryName: ExpenseCategories.categories[7].categoryName,
@@ -73,7 +89,6 @@ changeCurrency(){isCurrencyDollar=!isCurrencyDollar;notifyListeners();}
       _expenses = await _repository.getAllExpenses();
       _expenses.sort((a, b) => b.date.compareTo(a.date));
     } catch (e) {
-      log(e.toString());
       _error = e.toString();
     } finally {
       _isLoading = false;
@@ -87,7 +102,6 @@ changeCurrency(){isCurrencyDollar=!isCurrencyDollar;notifyListeners();}
       await _repository.addExpense(expense);
       await loadExpenses();
     } catch (e) {
-            log(e.toString());
 
       _error = e.toString();
       notifyListeners();
@@ -100,7 +114,6 @@ changeCurrency(){isCurrencyDollar=!isCurrencyDollar;notifyListeners();}
       await _repository.updateExpense(expense);
       await loadExpenses();
     } catch (e) {
-            log(e.toString());
 
       _error = e.toString();
       notifyListeners();
@@ -113,7 +126,6 @@ changeCurrency(){isCurrencyDollar=!isCurrencyDollar;notifyListeners();}
       await _repository.deleteExpense(id);
       await loadExpenses();
     } catch (e) {
-            log(e.toString());
 
       _error = e.toString();
       notifyListeners();

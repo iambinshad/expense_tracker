@@ -84,7 +84,7 @@ class ModernExpenseCard extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.5,
                     child: Text(
-                      "${expense.description}adfljasd",
+                      "${expense.description}",
                       style: textTheme.titleMedium,
                       overflow: TextOverflow.ellipsis,
                     ),

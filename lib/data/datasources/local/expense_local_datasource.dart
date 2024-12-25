@@ -14,7 +14,6 @@ class ExpenseLocalDatasource {
     try {
       await expenseBox.put(expense.id, expense);
     } catch (e) {
-      log(e.toString());
       throw CacheException('Failed to add expense');
     }
   }
@@ -45,7 +44,6 @@ class ExpenseLocalDatasource {
 
   Future<List<Expense>> getAllExpenses() async {
     try {
-      log(expenseBox.values.toList().toString());
       return expenseBox.values.toList();
     } catch (e) {
       throw CacheException('Failed to get expenses');

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:expense_tracker/core/constants/expense_categories.dart';
 import 'package:expense_tracker/domain/entities/expense.dart';
 import 'package:expense_tracker/presentation/providers/expense_provider.dart';
@@ -36,6 +38,15 @@ class _ExpenseFormWidgetState extends State<ExpenseFormWidget> {
           categoryIcon: ExpenseCategories.categories[7].categoryIcon,
         );
     pro.selectedDateE = widget.expense?.date ?? DateTime.now();
+  }
+
+  @override
+  void dispose() {
+    _descriptionController.dispose();
+    _amountController.dispose();
+    final pro = Provider.of<ExpenseProvider>(context, listen: false);
+    pro.resetValue();
+    super.dispose();
   }
 
   Future<void> _selectDate(BuildContext context) async {
